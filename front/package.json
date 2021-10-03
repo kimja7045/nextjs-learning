@@ -1,0 +1,20 @@
+{
+  "name": "react-nodebird-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build"
+  },
+  "author": "luke",
+  "license": "ISC",
+  "dependencies": {
+    "@ant-design/icons": "^4.6.4",
+    "antd": "^4.16.13",
+    "next": "^9.5.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "styled-components": "^5.3.1"
+  }
+}
