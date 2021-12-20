@@ -21,3 +21,4 @@ sketch
 
 .idea
 front/.next
+back/config/config.json
