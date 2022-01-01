@@ -17,3 +17,5 @@ sequelize
 mysql2
 
 - 드라이버
+
+npx sequelize db:create

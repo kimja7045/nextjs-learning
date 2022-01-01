@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     db.Post.belongsTo(db.User);
     db.Post.hasMany(db.Comment);
     db.Post.hasMany(db.Image);
-    db.Post.belongsToMany(db.Hashtag);
+    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
     db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }); // 좋아요 개수
     db.Post.belongsTo(db.Post, { as: 'Retweet' }); // 한 게시글이 여러 게시글을 리트윗 = 대댓글같은 유형, 일대다
   };
