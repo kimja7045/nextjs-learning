@@ -25,7 +25,7 @@ db.sequelize
   .catch(console.error);
 
 app.use(express.json()); // json의 형식을 req.body로 넣어줌
-app.use(express.urlencoded({ extended: true })); // form submit했을 때 urlencoded방식으로 넘어옴
+app.use(express.urlencoded({ extended: true })); // form submit했을 때 urlencoded방식으로 넘어오는 data를 req.body로 넣어줌
 
 app.get('/', (req, res) => {
   res.send('hello express');
