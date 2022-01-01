@@ -19,3 +19,5 @@ mysql2
 - 드라이버
 
 npx sequelize db:create
+
+bcrypt(비크립트) - 비밀번호 암호화 패키지
