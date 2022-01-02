@@ -12,6 +12,8 @@
 // app.js가 서비스의 본체
 
 const express = require('express');
+const cors = require('cors');
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 
@@ -24,6 +26,14 @@ db.sequelize
   })
   .catch(console.error);
 
+// app.use(cors({
+//   origin: 'https://nodebird.com'
+// }));
+app.use(
+  cors({
+    origin: true,
+  })
+);
 app.use(express.json()); // json의 형식을 req.body로 넣어줌
 app.use(express.urlencoded({ extended: true })); // form submit했을 때 urlencoded방식으로 넘어오는 data를 req.body로 넣어줌
 
