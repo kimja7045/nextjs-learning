@@ -38,7 +38,9 @@ passportConfig();
 // }));
 app.use(
   cors({
+    // origin: 'http://localhost:3060',
     origin: true,
+    credentials: true, // 쿠키를 같이 전달하고 싶으면 true로
   })
 );
 app.use(express.json()); // json의 형식을 req.body로 넣어줌

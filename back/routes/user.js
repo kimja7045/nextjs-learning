@@ -7,6 +7,43 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        // attributes: ['id', 'nickname', 'email'],
+        attributes: {
+          exclude: ['password'],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+        ],
+      });
+
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   // express의 미들웨어 확장 기법
   passport.authenticate('local', (err, user, clientError) => {
@@ -32,14 +69,17 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         include: [
           {
             model: Post,
+            attributes: ['id'],
           },
           {
             model: User,
             as: 'Followings',
+            attributes: ['id'],
           },
           {
             model: User,
             as: 'Followers',
+            attributes: ['id'],
           },
         ],
       });
@@ -74,7 +114,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
     });
     // res.json();
     // res.setHeader('Access-Control-Allow-Origin': 'http://localhost:3060')
-    res.status(201).send({ msg: 'OK', status: 201, ok: true, data: user });
+    res.status(201).json(user);
   } catch (error) {
     console.error(error);
     next(error); // status 500
@@ -84,7 +124,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
 router.post('/logout', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
-  res.status(200).send({ msg: 'ok', status: 200, ok: true });
+  res.status(200).send('OK');
 });
 
 module.exports = router;
