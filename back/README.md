@@ -21,3 +21,9 @@ mysql2
 npx sequelize db:create
 
 bcrypt(비크립트) - 비밀번호 암호화 라이브러리
+
+#
+
+http code
+
+300 - redirect or cache
