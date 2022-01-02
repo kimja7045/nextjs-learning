@@ -8,11 +8,12 @@ module.exports = () => {
   });
 
   passport.deserializeUser(async (id, done) => {
+    // 한번 로그인한 이후
     try {
       const user = await User.findOne({
         where: { id },
       });
-      done(null, user);
+      done(null, user); // user -> req.user
     } catch (error) {
       console.error(error);
       done(error);
