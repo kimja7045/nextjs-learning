@@ -112,4 +112,18 @@ router.delete('/:postId/like', async (req, res, next) => {
   }
 });
 
+router.delete('/:postId', async (req, res, next) => {
+  // DELETE / post/10
+
+  try {
+    const post = await Post.destory({
+      where: { id: req.params.postId },
+    });
+    res.json({ PostId: post.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;
