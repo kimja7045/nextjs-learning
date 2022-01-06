@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Post.associate = (db) => {
-    db.Post.belongsTo(db.User);
-    db.Post.hasMany(db.Comment);
-    db.Post.hasMany(db.Image);
-    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
-    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }); // 좋아요 개수
-    db.Post.belongsTo(db.Post, { as: 'Retweet' }); // 한 게시글이 여러 게시글을 리트윗 = 대댓글같은 유형, 일대다
+    db.Post.belongsTo(db.User); // post.addUser, post.getUser, post.setUser
+    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' }); // post.addHashtags
+    db.Post.hasMany(db.Comment); // post.addComments, post.getComments
+    db.Post.hasMany(db.Image); // post.addImages, post.getImages
+    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }); // 좋아요 개수, post.addLikers, post.removeLikers
+    db.Post.belongsTo(db.Post, { as: 'Retweet' }); // 한 게시글이 여러 게시글을 리트윗 = 대댓글같은 유형, 일대다, post.addRetweet
   };
   return Post;
 };
