@@ -52,3 +52,7 @@ npx pm2 reload all
 
 npx pm2 logs --error - 에러로그 확인
 npx pm2 list
+
+# lambda
+
+sharp - 이미지 리사이징에 사용
