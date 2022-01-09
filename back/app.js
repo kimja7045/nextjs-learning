@@ -19,6 +19,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -39,10 +41,18 @@ passportConfig();
 // app.use(cors({
 //   origin: 'https://nodebird.com'
 // }));
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+  // 배포모드
+  app.use(morgan('combined')); // 로그가 자세해져서 접속자의 ip도 알수있음
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
 app.use(
   cors({
     // origin: 'http://localhost:3060',
+    // origin: ['http://localhost:3060', 'nodebird.com'],
     origin: true,
     credentials: true, // 쿠키를 같이 전달하고 싶으면 true로
   })
