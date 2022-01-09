@@ -60,7 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-  res.send('hello express');
+  res.json('hello express');
 });
 
 app.use('/post', postRouter);
