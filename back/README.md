@@ -55,4 +55,32 @@ npx pm2 list
 
 # lambda
 
+함수명 - handler
+
 sharp - 이미지 리사이징에 사용
+
+lambda 폴더 경로에서 zip -r aws-upload.zip ./\* - 파일 묶기
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" - 알집화
+
+unzip awscliv2.zip
+
+sudo ./aws/install
+
+aws configure
+
+Default output format - json
+
+aws s3 cp "aws-upload.zip" s3://react-nodebird-luke - s3 경로에 알집파일 복사
+
+aws lambda 설정
+
+핸들러 index.handler = index.js안의 exports 핸들러
+
+메모리 256MB, 제한시간 30초로 수정
+
+역할을 AWS 정책 템플릿에서 새 역할 생성으로 수정 -> S3객체 읽기 전용 권한 선택
+
+트리거 - s3 추가
+
+접두사 - original/
