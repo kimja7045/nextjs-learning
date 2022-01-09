@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path'); // node에서 제공
 const fs = require('fs');
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -15,19 +17,31 @@ try {
   fs.mkdirSync('uploads');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACESS_KEY,
+  region: 'ap-northeast-2',
+});
 const upload = multer({
-  storage: multer.diskStorage({
-    // 컴퓨터의 하드디스크에 저장, 나중에 이 스토리지 옵션만 s3로 변경
-    destination(req, file, done) {
-      done(null, 'uploads'); // uploads가 폴더명
-    },
-    filename(req, file, done) {
-      // 제로초.png
-      const ext = path.extname(file.originalname); // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 제로초
-      done(null, basename + '_' + new Date().getTime() + ext); // 제로초15132421.png
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: 'react-nodebird-luke',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
     },
   }),
+  // storage: multer.diskStorage({
+  //   // 컴퓨터의 하드디스크에 저장, 나중에 이 스토리지 옵션만 s3로 변경
+  //   destination(req, file, done) {
+  //     done(null, 'uploads'); // uploads가 폴더명
+  //   },
+  //   filename(req, file, done) {
+  //     // 제로초.png
+  //     const ext = path.extname(file.originalname); // 확장자 추출(.png)
+  //     const basename = path.basename(file.originalname, ext); // 제로초
+  //     done(null, basename + '_' + new Date().getTime() + ext); // 제로초15132421.png
+  //   },
+  // }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
@@ -104,7 +118,8 @@ router.post(
   (req, res, next) => {
     // POST post/images
     console.log(req.files);
-    res.json(req.files.map((v) => v.filename));
+    res.json(req.files.map((v) => v.location));
+    // res.json(req.files.map((v) => v.filename));
   }
 );
 
