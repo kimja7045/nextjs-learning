@@ -36,7 +36,7 @@ router.get('/', async (req, res, next) => {
 
       res.status(200).json(fullUserWithoutPassword);
     } else {
-      res.status(200).json(null);
+      res.status(401).json('로그인이 필요합니다.');
     }
   } catch (error) {
     console.error(error);
@@ -51,6 +51,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
       console.error(err);
       return next(err);
     }
+
     if (clientError) {
       return res.status(401).send(clientError.reason); // 401, 허가되지않음
     }
@@ -127,7 +128,7 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.status(200).send('OK');
 });
 
-router.delete('/nickname', isLoggedIn, async (req, res, next) => {
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   try {
     await User.update(
       {

@@ -116,10 +116,10 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {
   // DELETE / post/10
 
   try {
-    await Post.destory({
+    await Post.destroy({
       where: { id: req.params.postId, UserId: req.user.id },
     });
-    res.status(200).json({ PostId: parseInt(req.params.post.id, 10) });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {
     console.error(error);
     next(error);
