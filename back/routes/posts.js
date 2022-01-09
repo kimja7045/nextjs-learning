@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { Post, User, Comment } = require('../models');
+const { Post, User, Comment, Image } = require('../models');
 
 const router = express.Router();
 
@@ -17,6 +17,9 @@ router.get('/', async (req, res, next) => {
         [Comment, 'createdAt', 'DESC'],
       ], // 2차원  배열인 이유는 여러 기준으로 정렬할 수 있기 때문, 기본은 'ASC'
       include: [
+        {
+          model: Image,
+        },
         {
           model: User,
           attributes: ['id', 'nickname'],

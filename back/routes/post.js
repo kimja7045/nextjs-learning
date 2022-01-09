@@ -15,7 +15,23 @@ try {
   fs.mkdirSync('uploads');
 }
 
-router.post('/', isLoggedIn, async (req, res, next) => {
+const upload = multer({
+  storage: multer.diskStorage({
+    // 컴퓨터의 하드디스크에 저장, 나중에 이 스토리지 옵션만 s3로 변경
+    destination(req, file, done) {
+      done(null, 'uploads'); // uploads가 폴더명
+    },
+    filename(req, file, done) {
+      // 제로초.png
+      const ext = path.extname(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 제로초
+      done(null, basename + '_' + new Date().getTime() + ext); // 제로초15132421.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const { content } = req.body;
 
@@ -23,6 +39,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
       content,
       UserId: req.user.id,
     });
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image }))
+        ); // Image.create promise
+        await post.addImages(images);
+      } else {
+        // 이미지를 하나만 올리면, image: zerocho.png
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
@@ -55,22 +84,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     console.error(error);
     next(error); // status 500
   }
-});
-
-const upload = multer({
-  storage: multer.diskStorage({
-    // 컴퓨터의 하드디스크에 저장, 나중에 이 스토리지 옵션만 s3로 변경
-    destination(req, file, done) {
-      done(null, 'uploads'); // uploads가 폴더명
-    },
-    filename(req, file, done) {
-      // 제로초.png
-      const ext = path.extname(file.originalname); // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 제로초
-      done(null, basename + new Date().getTime() + ext); // 제로초15132421.png
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
 router.post(

@@ -27,3 +27,5 @@ bcrypt(비크립트) - 비밀번호 암호화 라이브러리
 http code
 
 300 - redirect or cache
+
+파일은 보통 s3 클라우드에 올려서 cdn 캐싱을 적용
