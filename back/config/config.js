@@ -17,10 +17,10 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    username: 'luke',
+    username: 'root',
     password: process.env.DB_PASSWORD,
-    database: 'react_nodebird',
-    host: '127.0.0.1',
-    dialect: 'postgres',
+    database: process.env.DB_NAME,
+    host: process.env.AWS_ADDRESS,
+    dialect: 'mysql',
   },
 };

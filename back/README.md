@@ -33,3 +33,9 @@ http code
 #
 
 주소를 캐싱하면 데이터까지 같이 캐싱되는데, post나 put, patch는 캐싱이 안되지만 get은 데이터캐싱도 같이 할 수 있어서 get만의 이점이 있음
+
+ls -al : 권한까지 확인가능
+
+sudo apt-get install -y mysql-server
+
+sudo su 로 root 계정으로 전환
