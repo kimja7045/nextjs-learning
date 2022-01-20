@@ -72,7 +72,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-  res.json('hello express');
+  res.json('22hello express');
 });
 
 app.use('/post', postRouter);
