@@ -119,7 +119,7 @@ router.post(
     // POST post/images
     console.log(req.files);
     res.json(
-      req.files.map((v) => v.location.replace(/\/original\//, '/thumb/'))
+      req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')) // front - v.src.replace(/\/thumb\//, '/original/')
     );
     // res.json(req.files.map((v) => v.filename));
   }

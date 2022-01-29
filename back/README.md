@@ -84,3 +84,15 @@ aws lambda 설정
 트리거 - s3 추가
 
 접두사 - original/
+
+sudo rm awscliv2.zip aws-upload.zip
+
+sudo rm -rf aws
+
+zip -r aws-upload.zip ./\*
+
+# nginx + https
+
+reverse proxy
+
+wget https://dl.eff.org/certbot-auto - 3개월 짜리 인증서
