@@ -20,7 +20,7 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/react
 
 .idea
-front/.next
+front/.next/
 
 back/config/config.json
 .history/
