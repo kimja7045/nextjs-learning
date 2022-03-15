@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 
 import reducer from '../reducers';
+import rootSaga from '../sagas';
 
 // action이 dispatch되는것들을 logging하는 미들웨어, 삼단 고차함수
 const loggerMiddleware =
@@ -28,7 +29,7 @@ const configureStore = () => {
       ? compose(applyMiddleware(...middlewares))
       : composeWithDevTools(applyMiddleware(...middlewares));
   const store = createStore(reducer, enhancer); // state와 reducer를 포함하는 게 store
-//   store.sagaTask = saga
+  store.sagaTask = sagaMiddleware.run(rootSaga);
   // store.dispatch({
   //     type: 'CHANGE_NICKNAME',
   //     data: 'boogicho'
