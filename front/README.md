@@ -9,6 +9,8 @@ eslint // .eslintrc
 eslint-plugin-import  
 eslint-plugin-react-hooks
 
+npm i -D babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react-hooks eslint-plugin-jsx-a11y(접근성)
+
 xs: 모바일  
 sm: 태블릿  
 md: 작은 데스크탑

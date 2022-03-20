@@ -19,22 +19,28 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const { loginLoading } = useSelector((state) => state.user);
   // const [id, setId] = useState('');
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [passwordCheck, onChangePasswordCheck] = useInput('');
 
   // const style = useMemo(() => ({marginTop: 10}), [])
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ id, password }));
-  }, [id, password]);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor='user-email'>이메일</label>
         <br />
-        <Input name={'user-email'} value={id} onChange={onChangeId} required />
+        <Input
+          name={'user-email'}
+          type='email'
+          value={email}
+          onChange={onChangeEmail}
+          required
+        />
       </div>
       <div>
         <label htmlFor='user-password'>비밀번호</label>
