@@ -17,7 +17,10 @@ import userSaga from './user';
 import postSaga from './post';
 
 export default function* rootSaga() {
-  yield all([fork(userSaga), fork(postSaga)]);
+  yield all([
+      fork(userSaga),
+    fork(postSaga)
+  ]);
 }
 
 // const gen = function* () {
@@ -28,6 +31,8 @@ export default function* rootSaga() {
 //   console.log(3);
 //   yield;
 // };
+
+// const g = gen()
 // const gen2 = function* () {
 //   while (true) {
 //     yield '무한';

@@ -21,6 +21,8 @@ sketch
 
 .idea
 front/.next/
+# front/.next/static/
+# front/.next/server/
 
 back/config/config.json
 .history/
