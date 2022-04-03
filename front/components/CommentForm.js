@@ -8,9 +8,11 @@ import { ADD_COMMENT_REQUEST } from '../actions/post';
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
 
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector(
+    (state) => state.post
+  );
   const id = useSelector((state) => state.user.me?.id);
-  const [commentText, onChangeCommentTex, setCommentText] = useInput('');
+  const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   useEffect(() => {
     if (addCommentDone) {
@@ -19,7 +21,7 @@ const CommentForm = ({ post }) => {
   }, [addCommentDone]);
 
   const onSubmitComment = useCallback(() => {
-    console.log(post.id, commentText);
+    // console.log(post.id, commentText);
     dispatch({
       type: ADD_COMMENT_REQUEST,
       data: { postId: post.id, content: commentText, userId: id },
@@ -35,9 +37,10 @@ const CommentForm = ({ post }) => {
           rows={4}
         />
         <Button
-          style={{ position: 'absolute', right: 0, bottom: -40 }}
+          style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
           type={'primary'}
           htmlType={'submit'}
+          loading={addCommentLoading}
         >
           등록
         </Button>
