@@ -11,6 +11,8 @@ import {
   CHANGE_NICKNAME_FAILURE,
   CHANGE_NICKNAME_REQUEST,
   CHANGE_NICKNAME_SUCCESS,
+  ADD_POST_TO_ME,
+  REMOVE_POST_OF_ME,
 } from '../actions/user';
 
 export const initialState = {
@@ -67,7 +69,11 @@ const dummyUser = (data) => ({
   nickname: 'luke',
   id: 1,
   Posts: [],
-  Followings: [],
+  Followings: [
+    { nickname: '부기초' },
+    { nickname: 'Chanho Lee' },
+    { nickname: 'neue zeal' },
+  ],
   Followers: [],
 });
 
@@ -155,6 +161,22 @@ const reducer = (state = initialState, action) => {
         ...state,
         changeNicknameLoading: false,
         changeNicknameError: action.error,
+      };
+    case ADD_POST_TO_ME:
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: [{ id: action.data }, ...state.me.Posts],
+        },
+      };
+    case REMOVE_POST_OF_ME:
+      return {
+        ...state,
+        me: {
+          ...state.me,
+          Posts: state.me.Posts.filter((v) => v.id !== action.data),
+        },
       };
     default:
       return state;
