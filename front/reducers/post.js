@@ -8,45 +8,21 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
   REMOVE_POST_FAILURE,
+  LOAD_POSTS_SUCCESS,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_FAILURE,
 } from '../actions/post';
 import shortId from 'shortid';
 import produce from 'immer';
 
 export const initialState = {
-  mainPosts: [
-    {
-      id: '1',
-      User: {
-        id: 1,
-        nickname: '루크',
-      },
-      content: '첫 번째 게시글 #해시태그 #익스프레스',
-      Images: [
-        { id: shortId.generate(), src: 'https://picsum.photos/800/800' },
-        { id: shortId.generate(), src: 'https://picsum.photos/900/700' },
-        { id: shortId.generate(), src: 'https://picsum.photos/700/500' },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'nero',
-          },
-          content: '댓글내용11',
-        },
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'nero',
-          },
-          content: '댓글내용12',
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [],
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
+  hasMorePost: false,
+
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -58,6 +34,40 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+export const generateDummyPost = (number) => ({
+  id: '1',
+  User: {
+    id: 1,
+    nickname: '루크',
+  },
+  content: '첫 번째 게시글 #해시태그 #익스프레스',
+  Images: [
+    { id: shortId.generate(), src: 'https://picsum.photos/800/800' },
+    { id: shortId.generate(), src: 'https://picsum.photos/900/700' },
+    { id: shortId.generate(), src: 'https://picsum.photos/700/500' },
+  ],
+  Comments: [
+    {
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: 'nero',
+      },
+      content: '댓글내용11',
+    },
+    {
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: 'nero',
+      },
+      content: '댓글내용12',
+    },
+  ],
+});
+
+initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -97,6 +107,20 @@ const dummyComment = (content) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        // draft.mainPosts = draft.mainPosts.concat(generateDummyPost());
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;
         draft.addPostDone = false;

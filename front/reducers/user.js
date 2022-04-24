@@ -13,6 +13,12 @@ import {
   CHANGE_NICKNAME_SUCCESS,
   ADD_POST_TO_ME,
   REMOVE_POST_OF_ME,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
 } from '../actions/user';
 import produce from 'immer';
 
@@ -34,6 +40,13 @@ export const initialState = {
   me: null,
   signUpData: {},
   loginData: {},
+
+  followLoading: false,
+  followDone: false,
+  followError: false,
+  unFollowLoading: false,
+  unFollowDone: false,
+  unFollowError: false,
 };
 
 // redux-thunk
@@ -81,13 +94,44 @@ const dummyUser = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case FOLLOW_REQUEST:
+        draft.followLoading = true;
+        draft.followDone = false;
+        draft.followError = null;
+        break;
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false;
+        draft.followDone = true;
+        draft.me?.Followings.push({ id: action.data });
+        break;
+      case FOLLOW_FAILURE:
+        draft.followLoading = false;
+        draft.followError = action.error;
+        break;
+      case UNFOLLOW_REQUEST:
+        draft.unFollowLoading = true;
+        draft.unFollowDone = null;
+        draft.unFollowError = false;
+        break;
+      case UNFOLLOW_SUCCESS:
+        draft.unFollowLoading = false;
+        draft.unFollowDone = true;
+        draft.me.Followings = draft.me.Followings.filter(
+          (v) => v.id !== action.data
+        );
+        break;
+      case UNFOLLOW_FAILURE:
+        draft.unFollowLoading = false;
+        draft.unFollowError = action.error;
+        break;
       case LOG_IN_REQUEST:
         draft.loginLoading = true;
-        draft.loginLoading = null;
-        draft.loginLoading = false;
+        draft.loginDone = false;
+        draft.loginError = null;
         break;
       case LOG_IN_SUCCESS:
         draft.loginLoading = false;
+        draft.loginDone = true;
         draft.isLoggedIn = true;
         draft.me = dummyUser(action.data);
         break;
