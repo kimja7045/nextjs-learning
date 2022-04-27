@@ -21,7 +21,7 @@ export const initialState = {
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
-  hasMorePost: false,
+  hasMorePosts: true,
 
   addPostLoading: false,
   addPostDone: false,
@@ -35,39 +35,42 @@ export const initialState = {
   addCommentError: null,
 };
 
-export const generateDummyPost = (number) => ({
-  id: '1',
-  User: {
-    id: 1,
-    nickname: '루크',
-  },
-  content: '첫 번째 게시글 #해시태그 #익스프레스',
-  Images: [
-    { id: shortId.generate(), src: 'https://picsum.photos/800/800' },
-    { id: shortId.generate(), src: 'https://picsum.photos/900/700' },
-    { id: shortId.generate(), src: 'https://picsum.photos/700/500' },
-  ],
-  Comments: [
-    {
+export const generateDummyPost = (number) =>
+  Array(number)
+    .fill()
+    .map(() => ({
       id: shortId.generate(),
       User: {
-        id: shortId.generate(),
-        nickname: 'nero',
+        id: 1,
+        nickname: '루크',
       },
-      content: '댓글내용11',
-    },
-    {
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: 'nero',
-      },
-      content: '댓글내용12',
-    },
-  ],
-});
+      content: '첫 번째 게시글 #해시태그 #익스프레스',
+      Images: [
+        { id: shortId.generate(), src: 'https://picsum.photos/800/800' },
+        { id: shortId.generate(), src: 'https://picsum.photos/900/700' },
+        { id: shortId.generate(), src: 'https://picsum.photos/700/500' },
+      ],
+      Comments: [
+        {
+          id: shortId.generate(),
+          User: {
+            id: shortId.generate(),
+            nickname: 'nero',
+          },
+          content: '댓글내용11',
+        },
+        {
+          id: shortId.generate(),
+          User: {
+            id: shortId.generate(),
+            nickname: 'nero',
+          },
+          content: '댓글내용12',
+        },
+      ],
+    }));
 
-initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
+// initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -115,7 +118,8 @@ const reducer = (state = initialState, action) => {
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        // draft.mainPosts = draft.mainPosts.concat(generateDummyPost());
+        draft.mainPosts = action.data.concat(draft.mainPosts);
+        draft.hasMorePosts = draft.mainPosts.length < 50;
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
